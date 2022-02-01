@@ -17,7 +17,8 @@ model_params = {
     "initial_population": 50,
     "epochs": epochs,
     "size": size,
-    "name_run": name_run
+    "name_run": name_run,
+    "reset_on_extinction": True
 }
 
 pop_chart = PopChart([name_run], render_with_canvas=False, plot_every=10)

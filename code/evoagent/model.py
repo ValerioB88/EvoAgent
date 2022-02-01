@@ -74,8 +74,10 @@ class Environment(Model):
             name_run='sim',
             pop=None,  # either a path or an array of pop
             server_model=None,
+            reset_on_extinction=False,
             **kwargs
     ):
+        self.reset_on_extinction = reset_on_extinction
         self.server_model = server_model
         self.step_count = 0
         self.all_food = []
@@ -121,9 +123,12 @@ class Environment(Model):
         self.selected_agent_unique_id = self.schedule.agents[0].unique_id
 
     def save_model_state(self):
+        server_cmd = self.server_model  # this object can't be pickled..
+        self.server_model = None
         pickle.dump(self, open(self.saved_model_folder + f'/step{self.step_count}.pickle', 'wb'))
         pickle.dump([i for i in self.schedule.agents], open(self.saved_pop_folder + f'/step{self.step_count}.pickle', 'wb'))
         self.message += 'saved in: ' + self.saved_model_folder + f'/step{self.step_count}.pickle\n'
+        self.server_model = server_cmd
 
     def stop(self):
         self.server_model.event_loop.stop()
@@ -132,7 +137,6 @@ class Environment(Model):
         self.message += 'epochs finished\n'
         self.running = False
         self.save_model_state()
-        # modvis.SERVER.close_all_connections()
 
     def step(self):
         self.step_count += 1
@@ -152,10 +156,16 @@ class Environment(Model):
 
         if len(self.schedule.agents) > 0:
             self.food_dist_matrix = np.linalg.norm(np.array([[i.pos - j.pos for i in self.all_food] for j in self.schedule.agents]), axis=2)
-        # import evoenv.visualize as vis
         self.schedule.step()
         for f in self.all_food:
             f.step()
+
+        if len(self.schedule.agents) == 0:
+            if self.reset_on_extinction:
+                print("Extinctiong. Restarting")
+                self.server_model.reset_model()
+            else:
+                self.server_model.event_loop.stop()
 
     def create_new_genome(self, genome_type, genome_config):
         g = genome_type(self.global_id)
