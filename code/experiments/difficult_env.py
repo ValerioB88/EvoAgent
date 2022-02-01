@@ -23,7 +23,7 @@ model_params = {
 pop_chart = PopChart([name_run], render_with_canvas=False, plot_every=10)
 
 server = ModularServer(model_factory, [input_chart, output_chart, evo_canvas, pop_chart], "EvoAgent", model_params, verbose=False)
-server.launch(8654)
+server.launch(8657)
 
 stop=1
 

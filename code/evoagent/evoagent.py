@@ -105,18 +105,8 @@ class EvoAgent(Agent):
         close_food_idx = np.where(self.model.food_dist_matrix[pop_idx] < self.max_vision_dist)[0]
         close_food = [self.model.all_food[i] for i in np.where(self.model.food_dist_matrix[pop_idx] < self.max_vision_dist)[0]]
         if len(close_food):
-            # import warnings
-            # warnings.filterwarnings("error")
-
             ag_view = np.array([np.cos(self.direction), np.sin(self.direction)])
-            # try:
-            #     print("HERE")
-            #     print(ag_view)
-            #     [print(np.dot(ag_view, (self.model.all_food[i].pos - self.pos)) / (np.linalg.norm(ag_view) * self.model.food_dist_matrix[pop_idx][i])) for i in close_food_idx]
             all_rads = [ np.arccos(np.dot(ag_view, (self.model.all_food[i].pos - self.pos)) / (np.linalg.norm(ag_view) * self.model.food_dist_matrix[pop_idx][i])) for i in close_food_idx]
-            # except RuntimeWarning:
-            #
-            #     stop=1
 
             in_range_idx = [(all_rads[idx], i) for idx, i in enumerate(close_food_idx) if all_rads[idx] < self.fov/2 ]
             if in_range_idx:
@@ -139,9 +129,7 @@ class EvoAgent(Agent):
         self.pos = np.array([self.pos[0] + np.cos(self.direction)*out_forward, self.pos[1] + np.sin(self.direction)*out_forward])
         self.direction += np.deg2rad(out_rotation)
 
-
         [self.eat_food(self.model.all_food[i]) for i in np.where(self.model.food_dist_matrix[pop_idx] < self.radius * 2)[0]]
-
 
         if self.age > self.fertile_age_start and not self.fertile:
             self.fertile = True
@@ -150,7 +138,6 @@ class EvoAgent(Agent):
         if self.age > self.fertile_age_start and (self.countdown_offspring.counter == 0 or self.countdown_offspring.counter == np.inf):
             self.reproduce_asexual()
 
-        # bounce against walls
         if (self.pos[0] > self.model.max_size[0] - self.radius) or (self.pos[1] > self.model.max_size[1] - self.radius) or (self.pos[0] < 0 + self.radius) or (self.pos[1] < 0 + self.radius):
             self.pos = np.array([np.clip(self.pos[0], 0 + self.radius, self.model.max_size[0] - self.radius), np.clip(self.pos[1], 0 + self.radius, self.model.max_size[1] - self.radius)])
 
