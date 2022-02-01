@@ -201,8 +201,6 @@ var Simple_Continuous_Module = function(penv_width, penv_height, name_sim, model
 				if (controller.running == false)
 					controller.step()
 				output.innerHTML = "previous agent"
-
-
 			}
 			if (event.key === "d") {
 				send({"type": "command",
