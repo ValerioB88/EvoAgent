@@ -115,37 +115,29 @@ var ContinuousVisualization = function(canvas, context) {
 			if (p.selected)
 			{
 				el = document.getElementById('sel_net')
-				el.src = '/images/net_' + p.unique_id + '.svg'
-				console.log(el.src)
-				// el.src = '/images/cup.png'
-
+				el.src = '/images/id' + p.unique_id + '.svg'
 				el = document.getElementById('print_info')
 				el.innerText = ''
 				for (const name of p.print_info) {
 					el.innerText+= name + ': ' + p[name] + '\n'
 				}
-				for (i = 0; i < p.children_pos.length; i++)
-				{
+
+
+				for (i = 0; i < p.children_pos.length; i++) {
 					ctx.beginPath();
 					ctx.moveTo(cx, cy);
 					ctx.lineTo(p.children_pos[i][0], p.children_pos[i][1])
 					ctx.strokeStyle = 'white';
 					ctx.stroke();
 					ctx.closePath();
-
-
 				}
 			}
-
 
 		}
 	};
 
-	//
 	this.resetCanvas = function() {
-		// canvas.clear()
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
-		// ctx.beginPath();
 	};
 
 
@@ -157,17 +149,12 @@ var add_checkbox = function(id, label, elementid, start_checked=true) {
 		'                    <input id="' + id  + '"' + (start_checked? ' checked':'') + '  type="checkbox"/>\n' +
 		'\n' +
 		'                </div>'
-// let c = '<div class="input-group input-group-lg">\n' +
-// 		'                    <label class="label label-primary" style="margin-right: 15px">' + label + '</label>\n' +
-// 		'                    <input id="' + id  + '" checked type="checkbox"/>\n' +
-// 		'\n' +
-// 		'                </div>'
 	$("#" + elementid).append($(c)[0])
 
 	return c
 
 }
-var Simple_Continuous_Module = function(penv_width, penv_height) {
+var Simple_Continuous_Module = function(penv_width, penv_height, name_sim, model_load) {
 
 	// Create the element
 	// ------------------
@@ -175,7 +162,7 @@ var Simple_Continuous_Module = function(penv_width, penv_height) {
 	env_width = penv_width
 	env_height = penv_height
 
-	var canvas_tag = "<canvas id='c' width='" + env_width + "' height='" + env_height + "' class='col-xs-12' style='border:5px dashed; padding:0px; position: absolute; left: 0px; top: 80px; touch-action: none; user-select: none; cursor: default'></canvas>"
+	var canvas_tag = "<canvas id='c' width='" + env_width + "' height='" + env_height + "' class='col-xs-12' style='border:5px dashed; padding:0px; position: relative; left: 0px; top: 0px; touch-action: none; user-select: none; cursor: default'></canvas>"
 	var canvas = $(canvas_tag)[0];
 
 	$("#elements").append(canvas);
@@ -186,17 +173,23 @@ var Simple_Continuous_Module = function(penv_width, penv_height) {
 	$("#sidebarRight").append($(info_tag)[0])
 
 	// Text Info
-	var new_formatted_text = "<pre id='print_info'></pre>"
+	var new_formatted_text = "<pre id='print_info' style='min-height:250px' ></pre>"
 	var elem = $(new_formatted_text)[0]
 	$("#sidebarRight").append(elem)
-	add_checkbox("render_canvas", "Render CANVAS", "sidebar")
-	add_checkbox("render_fov", "Render FOV", "sidebar", false)
-	add_checkbox("render_bars", "Render BARS", "sidebar", false)
 
+	add_checkbox("render_canvas", "Render CANVAS", "sidebarLeft")
+	add_checkbox("render_fov", "Render FOV", "sidebarLeft", false)
+	add_checkbox("render_bars", "Render BARS", "sidebarLeft", false)
+
+	var output_tag = "<pre>...</pre>"
+	var output = $(output_tag)[0]
+	$("#sidebarRight").append(output)
 
 	var selected_net = '<img class="col-xs-12" style="padding-left: 0px; padding-right: 0px" id="sel_net" alt="sel_net" width="160" height="160">selected Net</img>'
-	$("#sidebar").append($(selected_net)[0])
+	$("#sidebarLeft").append($(selected_net)[0])
 
+	document.getElementById("simName").innerHTML = name_sim
+	document.getElementById("loadInfo").innerHTML = model_load
 
 
 	document.addEventListener("keydown",
@@ -207,40 +200,64 @@ var Simple_Continuous_Module = function(penv_width, penv_height) {
 					"command": "previous"})
 				if (controller.running == false)
 					controller.step()
+				output.innerHTML = "previous agent"
+
+
 			}
 			if (event.key === "d") {
 				send({"type": "command",
 					"command": "next"})
 				if (controller.running == false)
 					controller.step()
+				output.innerHTML = "next agent"
 			}
 			if (event.key === "k") {
 				send({"type": "command",
 					"command": "kill"})
 				if (controller.running == false)
 					controller.step()
+				output.innerHTML = "kill"
 			}
-			if (event.key === "s") {
+			if (event.key === "c") {
 				send({"type": "command",
 					"command": "offspring"})
 				if (controller.running == false)
 					controller.step()
+				output.innerHTML = "child"
+
 			}
-			if (event.code === "ControlLeft") {
-				if (controller.running)
+			if (event.key === "s") {
+				send({"type": "command",
+					"command": "save"})
+				if (controller.running == false)
+					controller.step()
+				output.innerHTML = "saved"
+
+			}
+			if (event.key === "q") {
+				if (controller.running) {
 					controller.stop()
-				else
+					output.innerHTML = "stopped"
+				}
+				else {
 					controller.start()
+					output.innerHTML = "started"
+				}
 			}
-			if (event.key === "c") {
+			if (event.key === "x") {
 				if (controller.running)
 					controller.stop()
 				controller.step()
+				output.innerHTML = "step"
+
 			}
 		});
 
 	this.render = function(data) {
-
+		document.getElementById("currentStep").innerText = data["step"]
+		if (data["message"] !== '') {
+			output.innerHTML = data["message"]
+		}
 		canvasDraw.resetCanvas();
 		document.getElementById("popcount").innerHTML=data["popcount"]
 		if (document.getElementById("render_canvas").checked)

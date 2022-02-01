@@ -1,13 +1,13 @@
 
 
-var SelectedAgentInfo = function(series, canvas_width, canvas_height) {
+var SelectedAgentInfo = function(series, canvas_width, canvas_height, render_with_canvas) {
 	this.max_length_data = 50
 	var canvas_tag = "<canvas width='" + canvas_width + "' height='" + canvas_height + "' ";
 	canvas_tag += "style='border:1px dotted'></canvas>";
 	var canvas = $(canvas_tag)[0];
 	$("#sidebarRight").append(canvas);
 	var context = canvas.getContext("2d");
-
+	this.render_with_canvas = render_with_canvas
 	var convertColorOpacity = function(hex) {
 
 		if (hex.indexOf('#') != 0) {
@@ -46,6 +46,7 @@ var SelectedAgentInfo = function(series, canvas_width, canvas_height) {
 			mode: 'index',
 			intersect: false
 		},
+		pointRadius: 1,
 		hover: {
 			mode: 'nearest',
 			intersect: true
@@ -68,20 +69,24 @@ var SelectedAgentInfo = function(series, canvas_width, canvas_height) {
 	});
 
 	this.render = function(newdata) {
+		if (newdata != null)
+		{
+			if ((document.getElementById("render_canvas").checked) || (!this.render_with_canvas)) {
+				chart.data.labels.push(control.tick);
+				if (chart.data.labels.length > this.max_length_data) {
+					chart.data.labels.shift();
 
-		chart.data.labels.push(control.tick);
-		if (chart.data.labels.length > this.max_length_data) {
-			chart.data.labels.shift();
+				}
+				for (i = 0; i < newdata.length; i++) {
 
-		}
-		for (i = 0; i < newdata.length; i++) {
-
-			if (chart.data.datasets[i].data.length > this.max_length_data) {
-				chart.data.datasets[i].data.shift();
+					if (chart.data.datasets[i].data.length > this.max_length_data) {
+						chart.data.datasets[i].data.shift();
+					}
+					chart.data.datasets[i].data.push(newdata[i])
+				}
+				chart.update('none');
 			}
-			chart.data.datasets[i].data.push(newdata[i])
 		}
-		chart.update('none');
 	};
 
 	this.reset = function() {

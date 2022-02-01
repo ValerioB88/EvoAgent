@@ -4,8 +4,9 @@ Flockers
 A Mesa implementation of Craig Reynolds's Boids flocker model.
 Uses numpy arrays to represent vectors.
 """
-from evoenv.utils import *
-
+import shutil
+from evoagent.utils import *
+from mesa.time import BaseScheduler
 from collections import namedtuple
 import numpy as np
 from mesa import Model
@@ -14,12 +15,16 @@ from mesa.time import RandomActivation
 from datetime import datetime
 import pathlib
 import neat
-from evoenv.visualize import draw_net
-from evoenv.evoagent import Countdown
+from evoagent.visualize import draw_net
+from evoagent.evoagent import Countdown
+from typing import Deque
+import pickle
+import os
+import mesa.visualization.ModularVisualization as modvis
+
+
 class FoodToken():
     radius = 5
-    _rad = 0
-    _dist = 0
 
     def __init__(self, pos, energy, model, respawn_after=100):
         self.pos = pos
@@ -43,9 +48,6 @@ class FoodToken():
             self.eaten = False
 
 
-
-
-from mesa.time import BaseScheduler
 class MyRandomActivation(BaseScheduler):
     def step(self) -> None:
         for idx, agent in enumerate(self.agent_buffer(shuffled=False)):
@@ -53,47 +55,95 @@ class MyRandomActivation(BaseScheduler):
         self.steps += 1
         self.time += 1
 
-from typing import Deque
 class Environment(Model):
     """
     Flocker model class. Handles agent creation, placement and scheduling.
     """
     global_id = 0
+    selected_agent_unique_id = 0
+    previous_epoch = None
+    running = True
+    step_start_epoch = 0
+    message = ''
 
     def __init__(
             self,
             initial_population=100,
-            epochs: Deque[Epoch] =None,
-            space_width=100,
-            space_height=100,
+            epochs=None,
+            size=None,
+            name_run='sim',
+            pop=None,  # either a path or an array of pop
+            **kwargs
     ):
+        self.step_count = 0
         self.all_food = []
         self.config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
                                   neat.DefaultSpeciesSet, neat.DefaultStagnation,
                                   './config-feedforward')
-        self.population = initial_population
-        self.max_size = np.array([space_width, space_height])
+        self.initial_pop = initial_population
+        self.max_size = np.array(size) if size else np.array([100, 100])
         self.schedule = MyRandomActivation(self)
-        self.make_agents()
+        self.name_run = name_run
+        self.saved_model_folder = f'./data/{self.name_run}/save_model/'
+        self.saved_pop_folder = f'./data/{self.name_run}/save_pop/'
+
+        self.net_svg_folder = f'./data/{self.name_run}/nets_svg/'
         self.all_epochs = epochs
-        self.selected_agent_unique_id = self.schedule.agents[0].unique_id
         self.current_epoch = self.all_epochs.popleft()
+        shutil.rmtree(self.net_svg_folder) if os.path.exists(self.net_svg_folder) else None
+        pathlib.Path(self.saved_model_folder).mkdir(parents=True, exist_ok=True)
+        pathlib.Path(self.saved_pop_folder).mkdir(parents=True, exist_ok=True)
+
+        pathlib.Path(self.net_svg_folder).mkdir(parents=True, exist_ok=True)
         self.spawn_food()
-        self.step_count = 0
-        # self.update_food_tokens(self.current_epoch.num_good_food, self.current_epoch.num_bad_food)
+        self.make_agents(pop)
+
         self.previous_epoch = None
         self.running = True
+        self.save_model_state()
 
     def spawn_food(self):
         self.all_food = [FoodToken(self.get_random_coord(), e, self) for e in self.current_epoch.energy_list]
 
+    def make_agents(self, pop=None):
+        if pop is not None:
+            if isinstance(pop, str):
+                pop = pickle.load(open(pop, 'rb'))
+            self.global_id = pop[0].model.global_id
+            for a in pop:
+                self.schedule.add(a)
+                a.model = self
+        else:
+            for i in range(self.initial_pop):
+                self.spawn_agent()
+        self.selected_agent_unique_id = self.schedule.agents[0].unique_id
 
-    def make_agents(self):
-        for i in range(self.population):
-            self.spawn_agent()
+    def save_model_state(self):
+        pickle.dump(self, open(self.saved_model_folder + f'/step{self.step_count}.pickle', 'wb'))
+        pickle.dump([i for i in self.schedule.agents], open(self.saved_pop_folder + f'/step{self.step_count}.pickle', 'wb'))
+        self.message += 'saved in: ' + self.saved_model_folder + f'/step{self.step_count}.pickle\n'
+
+    def stop(self):
+        print("Epochs finished!")
+        self.message += 'epochs finished\n'
+        self.running = False
+        self.save_model_state()
+        modvis.SERVER.stop()
+        # modvis.SERVER.close_all_connections()
 
     def step(self):
-        if len(self.all_epochs) > 0 and self.step_count > self.all_epochs[0].init_step:
+        self.step_count += 1
+        self.message = ''
+
+        if self.step_count % 1000 == 0:
+            self.save_model_state()
+
+        if self.step_count - self.step_start_epoch >= self.current_epoch.duration:
+            if len(self.all_epochs) == 0:
+                self.stop()
+                return
+            self.message += f'step {self.step_count}: new epoch!'
+            self.step_start_epoch = self.step_count
             self.current_epoch = self.all_epochs.popleft()
             self.spawn_food()
 
@@ -103,8 +153,6 @@ class Environment(Model):
         self.schedule.step()
         for f in self.all_food:
             f.step()
-
-        self.step_count += 1
 
     def create_new_genome(self, genome_type, genome_config):
         g = genome_type(self.global_id)
@@ -129,9 +177,9 @@ class Environment(Model):
             genome=self.create_new_genome(self.config.genome_type, self.config.genome_config) if genome is None else genome,
             parent=parent
         )
-        agent.spawn()
+
+
         self.global_id += 1
-        # self.space.place_agent(agent, pos)
         self.schedule.add(agent)
 
 

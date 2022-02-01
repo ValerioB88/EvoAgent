@@ -6,8 +6,8 @@ Module for drawing live-updating line charts using Charts.js
 
 """
 import json
+import os
 from mesa.visualization.ModularVisualization import VisualizationElement
-from evoenv.utils import find_pop_idx_from_id
 
 
 class Chart(VisualizationElement):
@@ -44,7 +44,7 @@ class Chart(VisualizationElement):
     """
 
     package_includes = ["Chart.min.js"]
-    local_includes = ["code/evoenv/network_chart.js"]
+    local_includes = ["code/evoagent/network_chart.js"]
 
 
     def __init__(
@@ -52,6 +52,8 @@ class Chart(VisualizationElement):
         series,
         canvas_height=200,
         canvas_width=500,
+        render_with_canvas=True,
+        plot_every=1
     ):
         """
         Create a new line chart visualization.
@@ -63,13 +65,13 @@ class Chart(VisualizationElement):
             canvas_height, canvas_width: Size in pixels of the chart to draw.
             data_collector_name: Name of the DataCollector to use.
         """
-
+        self.plot_every = plot_every
         self.series = series
         self.canvas_height = canvas_height
         self.canvas_width = canvas_width
 
         series_json = json.dumps(self.series)
-        new_element = f"new SelectedAgentInfo({series_json}, {canvas_width}, {canvas_height})"
+        new_element = f"new SelectedAgentInfo({series_json}, {canvas_width}, {canvas_height}, {'true' if render_with_canvas else 'false'})"
 
         self.js_code = "elements.push(" + new_element + ");"
 
@@ -77,22 +79,35 @@ class Chart(VisualizationElement):
 class InputChart(Chart):
     def render(self, model):
         # space_state = {}
-        current_values = [0, 0, 0]
-        if len(model.schedule.agents) > 0:
-            idx = find_pop_idx_from_id(model.schedule.agents, model.selected_agent_unique_id)
-            current_values = model.schedule.agents[idx].inputs
-        return current_values
+        if model.step_count % self.plot_every == 0:
+            if len(model.schedule.agents) > 0:
+                # idx = find_pop_idx_from_id(model.schedule.agents, model.selected_agent_unique_id)
+                current_values = model.schedule._agents[model.selected_agent_unique_id].inputs
+                return current_values
 
 
 class OutputChart(Chart):
     def render(self, model):
         # space_state = {}
-        current_values = [0, 0]
-        if len(model.schedule.agents) > 0:
-            idx = find_pop_idx_from_id(model.schedule.agents, model.selected_agent_unique_id)
-            current_values = model.schedule.agents[idx].outputs
-        return current_values
+        if model.step_count % self.plot_every == 0:
+            if len(model.schedule.agents) > 0:
+                # idx = find_pop_idx_from_id(model.schedule.agents, model.selected_agent_unique_id)
+                current_values = model.schedule._agents[model.selected_agent_unique_id].outputs
+                return current_values
 
+from matplotlib import colors
+
+cols = ["red", "green", "yellow", "blue", "cyan"]
+class PopChart(Chart):
+    def __init__(self, name_runs, **kwargs):
+        self.name_runs = name_runs
+        super().__init__([{"Label": f"Num {n}", "Color": colors.to_hex(cols[idx])} for idx, n in enumerate(self.name_runs)], **kwargs)
+
+    def render(self, model):
+        if model.step_count % self.plot_every == 0:
+            if len(model.schedule.agents) > 0:
+                current_values = [len([j for j in model.schedule.agents if j.name_run == i]) for i in self.name_runs]
+                return current_values
 
 
 

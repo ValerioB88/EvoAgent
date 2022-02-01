@@ -4,8 +4,7 @@ import string
 import random
 import numpy as np
 import neat
-from evoenv.utils import find_pop_idx_from_id
-import evoenv.visualize as vis
+
 
 class CountdownList():
     def __init__(self, cdl=None):
@@ -77,11 +76,13 @@ class EvoAgent(Agent):
             self.surname = parent.surname
             self.generation = parent.generation + 1
             self.color_hsl = np.clip(parent.color_hsl + np.random.randint(-5, 5), 0, 255)
+            self.name_run = parent.name_run
         else:
             self.color_hsl = np.random.randint(0, 256)
             self.generation = 0
             self.parent_id = []
             self.surname = ''.join(random.choices(string.ascii_lowercase, k=5))
+            self.name_run = self.model.name_run
 
         self.name = ''.join(random.choices(string.ascii_lowercase, k=5))
 
@@ -99,34 +100,29 @@ class EvoAgent(Agent):
         self.network_drawn = False
 
 
-
-    def spawn(self):
-        pass
-
     def compute_vision(self, pop_idx):
-        # [setattr(ft, "_dist", np.linalg.norm(ft.pos - self.pos)) for ft in self.model.all_food]
-        # np.linalg.norm(self.model.all_food[0].pos- self.pos)
-        # close_food = [ft for ft in self.model.all_food if ft._dist < self.max_vision_dist]
 
         close_food_idx = np.where(self.model.food_dist_matrix[pop_idx] < self.max_vision_dist)[0]
         close_food = [self.model.all_food[i] for i in np.where(self.model.food_dist_matrix[pop_idx] < self.max_vision_dist)[0]]
         if len(close_food):
-            # print(f"{len(close_food)} is close")
-        # for food_idx in close_food_idx:
-        #     [setattr(ft, "_rad", np.arccos(np.dot(ag_view, (ft.pos - self.pos)) / (np.linalg.norm(ag_view) * ft._dist))) for ft in close_food]
-
+            # import warnings
+            # warnings.filterwarnings("error")
 
             ag_view = np.array([np.cos(self.direction), np.sin(self.direction)])
+            # try:
+            #     print("HERE")
+            #     print(ag_view)
+            #     [print(np.dot(ag_view, (self.model.all_food[i].pos - self.pos)) / (np.linalg.norm(ag_view) * self.model.food_dist_matrix[pop_idx][i])) for i in close_food_idx]
             all_rads = [ np.arccos(np.dot(ag_view, (self.model.all_food[i].pos - self.pos)) / (np.linalg.norm(ag_view) * self.model.food_dist_matrix[pop_idx][i])) for i in close_food_idx]
+            # except RuntimeWarning:
+            #
+            #     stop=1
+
             in_range_idx = [(all_rads[idx], i) for idx, i in enumerate(close_food_idx) if all_rads[idx] < self.fov/2 ]
-            # [ np.arccos(np.dot(ag_view, (ft.pos - self.pos)) / (np.linalg.norm(ag_view) * ft._dist))) for ft in close_food]
-            # in_range_food = [ft for ft in close_food if ft._rad < self.fov / 2]
             if in_range_idx:
                 rad, selected_food_idx = in_range_idx[np.argmin([self.model.food_dist_matrix[pop_idx][i[1]] for i in in_range_idx])]
-                # selected_food = min(in_range_food, key=lambda item: item._dist)
                 s = np.sign(np.cross(ag_view, (self.model.all_food[selected_food_idx].pos - self.pos)))
                 rad *= s
-                # print(f"Food - d: {selected_food.dist}, r: {np.rad2deg(selected_food.rad)}")
                 return self.model.food_dist_matrix[pop_idx][selected_food_idx], rad, selected_food_idx
 
         return self.max_vision_dist, 0, -1
@@ -186,9 +182,6 @@ class EvoAgent(Agent):
         for key, cg1 in self.genome.nodes.items():
             new_genome.nodes[key] = cg1.copy()
 
-        # import evoenv.visualize as vis
-        # vis.draw_net(self.model.config, new_genome, True)
-        # vis.draw_net(self.model.config, self.genome, True)
 
         new_genome.mutate(self.model.config.genome_config)
         self.children_id.append(self.model.global_id)
