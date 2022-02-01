@@ -21,21 +21,23 @@ class Countdown():
     counter = np.inf
     started = False
 
-    def __init__(self, max=100, autostart=False, callback=None):
-        self.max = max
+    def __init__(self, start_value=100, autostart=False, callback=None, randomness=0):
+        self.randomness = randomness
+        self.start_value = start_value
+        self.counter = self.start_value + (np.random.randint(-self.randomness, self.randomness) if self.randomness != 0 else 0)
         self.autostart = autostart
         self.callback = callback
 
     def start(self):
         self.started = True
-        self.counter = self.max
+        self.counter = self.start_value + (np.random.randint(-self.randomness, self.randomness) if self.randomness != 0 else 0)
 
     def step(self):
         if self.started:
             self.counter -= 1
             if self.counter < 0:
                 if self.autostart:
-                    self.counter = self.max
+                    self.counter = self.start_value + (np.random.randint(-self.randomness, self.randomness) if self.randomness != 0 else 0)
                 else:
                     self.counter = 0
                     self.callback() if self.callback is not None else None
@@ -93,7 +95,7 @@ class EvoAgent(Agent):
         self.direction = direction
         self.genome = genome
         self.net = neat.nn.FeedForwardNetwork.create(genome, self.model.config)
-        self.countdown_offspring = Countdown(self.time_between_children)
+        self.countdown_offspring = Countdown(self.time_between_children, randomness=25)
         self.countdown_list = CountdownList([self.countdown_offspring])
         self.energy = 1 # np.random.uniform(0.75, 1)
         # self.network_svg_path = self.model.data_folder + f'/nets/net_{self.unique_id}'
