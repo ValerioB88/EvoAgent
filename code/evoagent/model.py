@@ -73,8 +73,10 @@ class Environment(Model):
             size=None,
             name_run='sim',
             pop=None,  # either a path or an array of pop
+            server_model=None,
             **kwargs
     ):
+        self.server_model = server_model
         self.step_count = 0
         self.all_food = []
         self.config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
@@ -124,11 +126,12 @@ class Environment(Model):
         self.message += 'saved in: ' + self.saved_model_folder + f'/step{self.step_count}.pickle\n'
 
     def stop(self):
+        self.server_model.event_loop.stop()
+        self.server_model = None
         print("Epochs finished!")
         self.message += 'epochs finished\n'
         self.running = False
         self.save_model_state()
-        modvis.SERVER.stop()
         # modvis.SERVER.close_all_connections()
 
     def step(self):
