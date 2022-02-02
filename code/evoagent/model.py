@@ -65,6 +65,8 @@ class Environment(Model):
     running = True
     step_start_epoch = 0
     message = ''
+    socket_message = None
+    extinct = False
 
     def __init__(
             self,
@@ -105,6 +107,7 @@ class Environment(Model):
         self.previous_epoch = None
         self.running = True
         self.save_model_state()
+        print(f"RUN: {self.name_run}")
 
     def spawn_food(self):
         self.all_food = [FoodToken(self.get_random_coord(), e, self) for e in self.current_epoch.energy_list]
@@ -131,14 +134,17 @@ class Environment(Model):
         self.server_model = server_cmd
 
     def stop(self):
-        self.server_model.event_loop.stop()
+        self.server_model.event_loop.stop() if self.server_model is not None else None
         self.server_model = None
         print("Epochs finished!")
         self.message += 'epochs finished\n'
         self.running = False
         self.save_model_state()
+        return "Finished"
 
     def step(self):
+        if self.step_count % 50 == 0:
+            print(f"Step: {self.step_count}, n pop: {len(self.schedule.agents)}")
         self.step_count += 1
         self.message = ''
 
@@ -152,6 +158,7 @@ class Environment(Model):
             self.message += f'step {self.step_count}: new epoch!'
             self.step_start_epoch = self.step_count
             self.current_epoch = self.all_epochs.popleft()
+            print(self.message)
             self.spawn_food()
 
         if len(self.schedule.agents) > 0:
@@ -162,10 +169,13 @@ class Environment(Model):
 
         if len(self.schedule.agents) == 0:
             if self.reset_on_extinction:
-                print("Extinctiong. Restarting")
-                self.server_model.reset_model()
+                print("Extinctiong. Restarting") if not self.extinct else None
+                self.extinct = True
+                self.socket_message = "reset"
+                return "Extinction"
             else:
-                self.server_model.event_loop.stop()
+                self.server_model.event_loop.stop() if self.server_model is not None else None
+        return "Step"
 
     def create_new_genome(self, genome_type, genome_config):
         g = genome_type(self.global_id)
