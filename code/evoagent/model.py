@@ -21,7 +21,8 @@ from typing import Deque
 import pickle
 import os
 import mesa.visualization.ModularVisualization as modvis
-
+from tqdm.auto import tqdm
+import sty
 
 class FoodToken():
     radius = 5
@@ -95,6 +96,8 @@ class Environment(Model):
 
         self.net_svg_folder = f'./data/{self.name_run}/nets_svg/'
         self.all_epochs = epochs
+        self.pbar = tqdm(total=np.sum([e.duration for e in self.all_epochs]), dynamic_ncols=True, colour="yellow")
+
         self.current_epoch = self.all_epochs.popleft()
         shutil.rmtree(self.net_svg_folder) if os.path.exists(self.net_svg_folder) else None
         pathlib.Path(self.saved_model_folder).mkdir(parents=True, exist_ok=True)
@@ -128,10 +131,13 @@ class Environment(Model):
     def save_model_state(self):
         server_cmd = self.server_model  # this object can't be pickled..
         self.server_model = None
+        pbar_cmd = self.pbar
+        self.pbar = None
         pickle.dump(self, open(self.saved_model_folder + f'/step{self.step_count}.pickle', 'wb'))
         pickle.dump([i for i in self.schedule.agents], open(self.saved_pop_folder + f'/step{self.step_count}.pickle', 'wb'))
         self.message += 'saved in: ' + self.saved_model_folder + f'/step{self.step_count}.pickle\n'
         self.server_model = server_cmd
+        self.pbar = pbar_cmd
 
     def stop(self):
         self.server_model.event_loop.stop() if self.server_model is not None else None
@@ -143,8 +149,12 @@ class Environment(Model):
         return "Finished"
 
     def step(self):
-        if self.step_count % 50 == 0:
-            print(f"Step: {self.step_count}, n pop: {len(self.schedule.agents)}")
+        self.pbar.set_description("Steps")
+        self.pbar.set_postfix_str(f"n. pop {len(self.schedule.agents)}")
+        self.pbar.update(1)
+        print(sty.rs.fg, end="")
+        # if self.step_count % 50 == 0:
+        #     print(f"Step: {self.step_count}, n pop: {len(self.schedule.agents)}")
         self.step_count += 1
         self.message = ''
 
@@ -154,7 +164,7 @@ class Environment(Model):
         if self.step_count - self.step_start_epoch >= self.current_epoch.duration:
             if len(self.all_epochs) == 0:
                 return self.stop()
-            self.message += f'step {self.step_count}: new epoch!'
+            self.message += f'step {self.step_count}: new epoch'
             self.step_start_epoch = self.step_count
             self.current_epoch = self.all_epochs.popleft()
             print(self.message)
@@ -168,9 +178,11 @@ class Environment(Model):
 
         if len(self.schedule.agents) == 0:
             if self.reset_on_extinction:
+                self.pbar.disable = True
                 print("Extinctiong. Restarting") if not self.extinct else None
                 self.extinct = True
                 self.socket_message = "reset"
+                tqdm._instances.pop().close()
                 return "Extinction"
             else:
                 self.server_model.event_loop.stop() if self.server_model is not None else None
