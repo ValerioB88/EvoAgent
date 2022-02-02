@@ -2,30 +2,35 @@ from mesa.visualization.ModularVisualization import ModularServer
 from evoagent.utils import *
 from evoagent.SimpleContinuousModule import SimpleCanvas
 from evoagent.network_chart import PopChart
-
-def run(seed):
+from copy import deepcopy
+def run(seed=0):
     size = (1000, 1000)
 
     name_run = f"difficult_envS{seed}"
 
-    evo_canvas = SimpleCanvas(*size, name_run)
-
-    epochs = deque([Epoch(20, [0.8]*200),
-                    Epoch(20, [0.8]*100),
-                    Epoch(60, [0.8]*75)])
+    epochs = deque([Epoch(2000, [0.8]*200),
+                    Epoch(2000, [0.8]*100),
+                    Epoch(6000, [0.8]*75)])
 
     model_params = {
         "initial_population": 50,
         "epochs": epochs,
         "size": size,
         "name_run": name_run,
-        "reset_on_extinction": True
+        "reset_on_extinction": True,
     }
 
-    pop_chart = PopChart([name_run], render_with_canvas=False, plot_every=10)
+    r = "Start"
+    while r != "Finished":
+        m = model_factory(**deepcopy(model_params))
+        r = m.step()
+        while r == "Step":
+            r = m.step()
 
-    server = ModularServer(model_factory, [input_chart, output_chart, evo_canvas, pop_chart], "EvoAgent", model_params, verbose=False)
-    server.launch()
+    # evo_canvas = SimpleCanvas(*size, name_run)
+    # pop_chart = PopChart([name_run], render_with_canvas=False, plot_every=10)
+    # server = ModularServer(model_factory, [input_chart, output_chart, evo_canvas, pop_chart], "EvoAgent", model_params, verbose=False)
+    # server.launch()
 
 
 if __name__ == '__main__':

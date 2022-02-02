@@ -19,18 +19,13 @@ def run(seed=0):
         "reset_on_extinction": True,
     }
 
-    r = "Start"
-    while r != "Finished":
-        m = model_factory(**deepcopy(model_params))
-        r = m.step()
-        while r == "Step":
-            r = m.step()
 
-    # evo_canvas = SimpleCanvas(*size, name_run)
-    # pop_chart = PopChart([name_run], render_with_canvas=False, plot_every=10)
 
-    # server = ModularServer(model_factory, [input_chart, output_chart, evo_canvas, pop_chart], "EvoAgent", model_params, verbose=False)
-    # server.launch()
+    evo_canvas = SimpleCanvas(*size, name_run)
+    pop_chart = PopChart([name_run], render_with_canvas=False, plot_every=10)
+    #
+    server = ModularServer(model_factory, [input_chart, output_chart, evo_canvas, pop_chart], "EvoAgent", model_params, verbose=False)
+    server.launch()
 
 if __name__ == '__main__':
     run()
