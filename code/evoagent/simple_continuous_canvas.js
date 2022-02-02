@@ -252,7 +252,15 @@ var Simple_Continuous_Module = function(penv_width, penv_height, name_sim, model
 		});
 
 	this.render = function(data) {
-		document.getElementById("currentStep").innerText = data["step"]
+		// document.getElementById("currentStep").innerText = data["step"]
+
+		if (data["global_commands"] == "reset")
+		{
+			controller.reset()
+		}
+
+
+
 		if (data["message"] !== '') {
 			output.innerHTML = data["message"]
 		}
