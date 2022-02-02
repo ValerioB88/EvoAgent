@@ -11,7 +11,7 @@ At the beginning, agents are endowed with a simple neural network which is speci
 
 
 ## Install
-`git clone git@github.com:ValerioB88/EvoAgent.git` 
+`git clone --recurse-submodule git@github.com:ValerioB88/EvoAgent.git` 
 
 EvoAgent plots everything in the browser. This is heavily dependent on the [Mesa library][3]. [My fork][4] of Project Mesa should be automatically added as a submodule.
 
