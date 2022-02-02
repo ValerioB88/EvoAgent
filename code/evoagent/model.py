@@ -153,8 +153,7 @@ class Environment(Model):
 
         if self.step_count - self.step_start_epoch >= self.current_epoch.duration:
             if len(self.all_epochs) == 0:
-                self.stop()
-                return
+                return self.stop()
             self.message += f'step {self.step_count}: new epoch!'
             self.step_start_epoch = self.step_count
             self.current_epoch = self.all_epochs.popleft()
