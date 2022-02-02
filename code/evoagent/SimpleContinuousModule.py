@@ -49,12 +49,6 @@ class SimpleCanvas(VisualizationElement):
         new_element = f"new Simple_Continuous_Module({self.canvas_width}, {self.canvas_height}, '{name_sim}', '{additional_info}')"
         self.js_code = "elements.push(" + new_element + ");"
 
-    # def pos_coods2space_coords(self, pos, space):
-    #     x, y = pos
-    #     x = (x -space.x_min) / (space.x_max - space.x_min)  # map from 0 to 1
-    #     y = (y -space.y_min) / (space.y_max - space.y_min)
-    #     return x, y
-
     def render(self, model: Environment):
         space_state = []
         food_aimed = -1
@@ -92,5 +86,6 @@ class SimpleCanvas(VisualizationElement):
         info["entities"] = space_state
         info["message"] = model.message
         info["step"] = model.step_count
+        info["global_commands"] = model.socket_message
 
         return info
