@@ -10,7 +10,6 @@ def run(seed=0):
     name_run = f"easy_envS{seed}"
 
     epochs = deque([Epoch(10000, [0.8]*200)])
-
     model_params = {
         "initial_population": 50,
         "epochs": epochs,
