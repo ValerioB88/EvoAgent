@@ -10,19 +10,14 @@ from mesa.time import BaseScheduler
 from collections import namedtuple
 import numpy as np
 from mesa import Model
-from mesa.space import ContinuousSpace
-from mesa.time import RandomActivation
-from datetime import datetime
 import pathlib
 import neat
-from evoagent.visualize import draw_net
 from evoagent.evoagent import Countdown
-from typing import Deque
 import pickle
 import os
-import mesa.visualization.ModularVisualization as modvis
 from tqdm.auto import tqdm
 import sty
+from itertools import count
 
 class FoodToken():
     radius = 5
@@ -107,6 +102,12 @@ class Environment(Model):
         self.spawn_food()
         self.make_agents(pop)
 
+        ## Here we update the GLOBAL node indexer so that it never overlaps with those already used in the loaded pops (useful when the loaded pop is a mixture of pops coming from different simulations)
+        if pop is not None:
+            l = [list(a.genome.nodes.keys()) for a in self.schedule.agents]
+            flat_l = [e for l in l for e in l]  # flatten list of lists... not sure htf it does that.
+            self.config.genome_config.node_indexer = count(max(flat_l) +1)
+
         self.previous_epoch = None
         self.running = True
         self.save_model_state()
@@ -142,6 +143,8 @@ class Environment(Model):
     def stop(self):
         self.server_model.event_loop.stop() if self.server_model is not None else None
         self.server_model = None
+        tqdm._instances.pop().close()
+
         print("Epochs finished!")
         self.message += 'epochs finished\n'
         self.running = False
