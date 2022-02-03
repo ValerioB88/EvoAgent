@@ -54,7 +54,7 @@ This means that we have 3 epochs, the first lasting 2000 iteration, the last 600
 The simulation will activate one epoch at the time, starting from the first one. When the last epoch finishes, the simulation stop. You can instead run the simulation indefinitively by setting the epoch duration to `np.inf`. 
 
 ## Speed Up Simulation
-In the environment view, uncheck `Render Canvas`, then set the `Frame per Second` slider to 0. That's as fast as it can get!
+In the environment view, uncheck `Render Canvas`, then set the `Frame per Second` slider to 0. That's as fast as it can get! You'll probably get even more speed up if you don't use the environment view, and run everything in pure python. Check the `experiments/diffcult_env.py` for and example.
 
 ## Known Problems
 If you stop the simulation and try to run it again, you'll get the error:\
