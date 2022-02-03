@@ -70,7 +70,8 @@ This has only been tested on Windows 10 and Edge 97. I don't plan to test it on 
 &#9744; Implement data collection - or adapt mesa data collection\
 &#9744; Implement more ways to perceive food\
 &#9744; Implement ways to perceive other agents\
-&#9744; Server port stays open after code stops - which often lead to annoying behaviour. Find a way to fix this
+&#9746; Server port stays open after code stops - which often lead to annoying behaviour. Find a way to fix this - Done. Port is allocated dynamically
+&#9746; Examples to run the simulation without the environment view, and print some info in the console
 <!--- &#9746; -->
 
 
