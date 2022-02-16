@@ -1,7 +1,7 @@
 from collections import namedtuple, deque
 import pickle
-from evoagent.model import Environment
-from evoagent.network_chart import InputChart, OutputChart
+from .model import Environment
+from .network_chart import InputChart, OutputChart
 from matplotlib import colors
 
 Epoch = namedtuple('Epoch', ['duration', 'energy_list'])

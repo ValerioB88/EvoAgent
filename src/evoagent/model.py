@@ -1,18 +1,13 @@
-"""
-Flockers
-=============================================================
-A Mesa implementation of Craig Reynolds's Boids flocker model.
-Uses numpy arrays to represent vectors.
-"""
+from mesa.datacollection import DataCollector
 import shutil
-from evoagent.utils import *
+from .utils import *
 from mesa.time import BaseScheduler
 from collections import namedtuple
 import numpy as np
 from mesa import Model
 import pathlib
 import neat
-from evoagent.evoagent import Countdown
+from .evoagent import Countdown
 import pickle
 import os
 from tqdm.auto import tqdm
@@ -51,10 +46,34 @@ class MyRandomActivation(BaseScheduler):
         self.steps += 1
         self.time += 1
 
+
+import pandas as pd
+class AgentDataCollector:
+    counter = 0
+    def __init__(self, name_collector, attributes, name_attrs, update_every=1):
+        self.attributes = attributes
+        self.name_collector = name_collector
+        self.name_attrs = name_attrs
+        self.update_every = update_every
+        self.all_rows = []
+
+    def update(self, a):
+        self.counter += 1
+        if self.counter >= self.update_every:
+            self.all_rows.append([getattr(a, i) if isinstance(i, str) else i(a) for i in self.attributes])
+            self.counter = 0
+
+    def save(self, path):
+        if self.all_rows:
+            df = pd.DataFrame(self.all_rows)
+            df.columns = self.name_attrs
+            pathlib.Path(os.path.dirname(path)).mkdir(parents=True, exist_ok=True)
+            df.to_csv(path, index=False)
+        self.all_rows = []
+
+from evoagent.evoagent import EvoAgent
+
 class Environment(Model):
-    """
-    Flocker model class. Handles agent creation, placement and scheduling.
-    """
     global_id = 0
     selected_agent_unique_id = 0
     previous_epoch = None
@@ -73,8 +92,26 @@ class Environment(Model):
             pop=None,  # either a path or an array of pop
             server_model=None,
             reset_on_extinction=False,
+            collect_data=False,
             **kwargs
     ):
+        print(sty.fg.green + f"Name Run: {name_run}" + sty.rs.fg)
+        self.collect_data = collect_data
+        if self.collect_data:
+            self.collectors = {
+                # EvoAgent.die: AgentDataCollector('post_mortem', ['unique_id', 'name_run', 'age'], name_attrs=['id', 'nr', 'age']),
+                               Environment.step:
+                                   AgentDataCollector('env_state',
+                                                      ['step_count',
+                                                       'name_run',
+                                                       lambda s: len(s.schedule.agents),
+                                                       lambda s: len([f for f in s.all_food if f.eaten])],
+                                                      ['step',
+                                                       'name_run',
+                                                       'num_agents',
+                                                       'num_food'],
+                                                      update_every=25)}
+
         self.reset_on_extinction = reset_on_extinction
         self.server_model = server_model
         self.step_count = 0
@@ -88,6 +125,7 @@ class Environment(Model):
         self.name_run = name_run
         self.saved_model_folder = f'./data/{self.name_run}/save_model/'
         self.saved_pop_folder = f'./data/{self.name_run}/save_pop/'
+        self.saved_collectors = f'./data/{self.name_run}/collectors/'
 
         self.net_svg_folder = f'./data/{self.name_run}/nets_svg/'
         self.all_epochs = epochs
@@ -130,15 +168,19 @@ class Environment(Model):
         self.selected_agent_unique_id = self.schedule.agents[0].unique_id
 
     def save_model_state(self):
+        [c.save(self.saved_collectors + f'/{c.name_collector}/step{self.step_count}.csv') for k, c in self.collectors.items()]
         server_cmd = self.server_model  # this object can't be pickled..
         self.server_model = None
         pbar_cmd = self.pbar
         self.pbar = None
+        collectors_cmd = self.collectors
+        self.collectors = None
         pickle.dump(self, open(self.saved_model_folder + f'/step{self.step_count}.pickle', 'wb'))
         pickle.dump([i for i in self.schedule.agents], open(self.saved_pop_folder + f'/step{self.step_count}.pickle', 'wb'))
         self.message += 'saved in: ' + self.saved_model_folder + f'/step{self.step_count}.pickle\n'
         self.server_model = server_cmd
         self.pbar = pbar_cmd
+        self.collectors = collectors_cmd
 
     def stop(self):
         self.server_model.event_loop.stop() if self.server_model is not None else None
@@ -152,6 +194,7 @@ class Environment(Model):
         return "Finished"
 
     def step(self):
+        self.collectors[Environment.step].update(self)
         self.pbar.set_description("Steps")
         self.pbar.set_postfix_str(f"n. pop {len(self.schedule.agents)}")
         self.pbar.update(1)
@@ -212,7 +255,7 @@ class Environment(Model):
             pos,
             dir,
             genome=self.create_new_genome(self.config.genome_type, self.config.genome_config) if genome is None else genome,
-            parent=parent
+            parent=parent,
         )
 
 
@@ -220,4 +263,7 @@ class Environment(Model):
         self.schedule.add(agent)
 
 
+
+
+##
 

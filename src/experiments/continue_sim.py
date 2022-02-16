@@ -1,7 +1,7 @@
-from mesa.visualization.ModularVisualization import ModularServer
-from evoagent.utils import *
-from evoagent.SimpleContinuousModule import SimpleCanvas
-from evoagent.network_chart import PopChart
+from .mesa.visualization.ModularVisualization import ModularServer
+from src.evoagent.utils import *
+from src.evoagent.SimpleContinuousModule import SimpleCanvas
+from src.evoagent.network_chart import PopChart
 from matplotlib import colors
 
 

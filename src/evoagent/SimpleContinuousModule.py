@@ -1,8 +1,8 @@
 from mesa.visualization.ModularVisualization import VisualizationElement
-from evoagent.model import Environment, FoodToken
-from evoagent.evoagent import EvoAgent
-from evoagent.utils import find_pop_idx_from_id
-import evoagent.visualize as vis
+from .model import Environment, FoodToken
+from .evoagent import EvoAgent
+from .utils import find_pop_idx_from_id
+from .visualize import draw_net
 
 def object_draw(pop_idx, type="agent", obj : EvoAgent=None, is_selected=False):
     if type == "agent":
@@ -63,7 +63,7 @@ class SimpleCanvas(VisualizationElement):
             if model.selected_agent_unique_id == obj.unique_id:
                 food_aimed = obj.target_food
                 if not obj.network_drawn:
-                    vis.draw_net(model.config, obj.genome, view=False, filename=model.net_svg_folder + f'id{obj.unique_id}')
+                    draw_net(model.config, obj.genome, view=False, filename=model.net_svg_folder + f'id{obj.unique_id}')
                     obj.network_drawn = True
                 portrayal['selected'] = True
                 # Add here all those info that it's computationally expensive to add for all agents

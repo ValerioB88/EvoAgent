@@ -1,10 +1,10 @@
 
 import pickle
 from mesa.visualization.ModularVisualization import ModularServer
-from evoagent.utils import *
-from evoagent.SimpleContinuousModule import SimpleCanvas
+from src.evoagent.utils import *
+from src.evoagent.SimpleContinuousModule import SimpleCanvas
 import numpy as np
-from evoagent.network_chart import PopChart
+from src.evoagent.network_chart import PopChart
 
 def run(seed=0):
 

@@ -70,7 +70,8 @@ class EvoAgent(Agent):
         pos,
         direction,
         genome,
-        parent: 'EvoAgent' =None
+        parent: 'EvoAgent' = None,
+        collectors=None,
     ):
         super().__init__(unique_id, model)
         if parent is not None:
@@ -101,6 +102,7 @@ class EvoAgent(Agent):
         # self.network_svg_path = self.model.data_folder + f'/nets/net_{self.unique_id}'
         self.network_drawn = False
 
+        self.die_callbacks = []
 
     def compute_vision(self, pop_idx):
 
@@ -148,12 +150,15 @@ class EvoAgent(Agent):
         self.countdown_list.step()
         self.age += 1
 
+
     def eat_food(self, food):
         self.energy = np.clip(self.energy + food.energy, 0, 1)
         food.get_eaten()
 
 
     def die(self):
+        self.model.collectors[EvoAgent.die].update(self) if EvoAgent.die in self.model.collectors else None
+
         self.model.schedule.remove(self)
         if len(self.model.schedule.agents) > 0:
             if self.unique_id == self.model.selected_agent_unique_id:
