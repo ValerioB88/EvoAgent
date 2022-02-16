@@ -1,4 +1,4 @@
-from mesa.visualization.ModularVisualization import VisualizationElement
+from mesa.mesa.visualization.ModularVisualization import VisualizationElement
 from .model import Environment, FoodToken
 from .evoagent import EvoAgent
 from .utils import find_pop_idx_from_id

@@ -7,7 +7,7 @@ Module for drawing live-updating line charts using Charts.js
 """
 import json
 import os
-from mesa.visualization.ModularVisualization import VisualizationElement
+from mesa.mesa.visualization.ModularVisualization import VisualizationElement
 
 
 class Chart(VisualizationElement):

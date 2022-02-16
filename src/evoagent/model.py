@@ -1,10 +1,10 @@
-from mesa.datacollection import DataCollector
+from mesa.mesa.datacollection import DataCollector
 import shutil
 from .utils import *
-from mesa.time import BaseScheduler
+from mesa.mesa.time import BaseScheduler
 from collections import namedtuple
 import numpy as np
-from mesa import Model
+from mesa.mesa import Model
 import pathlib
 import neat
 from .evoagent import Countdown

@@ -1,5 +1,5 @@
 import numpy as np
-from mesa import Agent
+from mesa.mesa import Agent
 import string
 import random
 import numpy as np
