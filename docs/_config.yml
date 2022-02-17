@@ -1,57 +1,13 @@
-title: EvoAgent Log
-description: Ideas and Projects -> EvoAgents
-author: Valerio Biscione
-github: https://github.com/ValerioB88
-about: Will post progress about the EvoAgent tool
-disqus_shortname: ??? What?
-google_analytics: 
 
-enableTags: true
-tagarray: []
+title: EvoAgent Diary
+author: ValerioB88
+email: valerio.biscione@gmail.com
+description: > # this means to ignore newlines until "baseurl:"
+  A place to share ideas about EvoAgent and the simulations to run with it.
+theme: minima
+# base_url: /EvoAgent
+# social links
+twitter_username: your-twitter-handle # DO NOT include the @ character, or else the build will fail!
+github_username:  ValerioB88 # DO NOT include the @ character, or else the build will fail!
 
-collections:
-  project:
-    output: true
-    permalink: /project/:path/
-
-social:
-    - icon: fa-facebook
-      link: "#"
-    - icon: fa-twitter
-      link: "#"
-    - icon: fa-linkedin
-      link: "#"
-    - icon: fa-stack-exchange
-      link: "#"
-    - icon: fa-github
-      link: "https://github.com/ValerioB88"
-
-share:
-  twitter_username: github.io
-  fb_appid: 
-
-urls:
-    - text: About Me
-      url: /about/
-    - text: My Projects
-      url: /projects/
-    - text: XML Feed
-      url: /feed.xml
-
-url: "https://ValerioB88.github.io"
-baseurl: ""
-paginate: 20
-per_page: 20
-paginate_path: "/page/:num/"
-markdown: kramdown
-gems:
-  - jekyll-paginate
-  - jekyll-gist
-
-compress_html:
-  clippings: all
-  comments: ["<!-- ", " -->"]
-  endings: all
-  ignore:
-    envs: ['development']
->>>>>>> eb9da04 (Added new theme-)
+show_excerpts: true # set to false to remove excerpts on the homepage
