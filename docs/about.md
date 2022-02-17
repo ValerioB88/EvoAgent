@@ -10,10 +10,10 @@ https://www.youtube.com/watch?v=pOF1H84xPik&ab_channel=VBiscione
       ![My helpful o222t](EvoAgent/docs/assets/main.png)
       ![helpful o222t](./EvoAgent/docs/assets/main.png)
       
-      ![My sssss o222t](/EvoAgent/docs/assets/main.png)
-      [Some Link]({% post_url 2020-02-15-SecondPost %})
+      
 
 ## Overview
+![My sssss o222t](/EvoAgent/docs/assets/main.png)
 With this tool you can evolve agents in a simple 2D environments. \
 At the beginning, agents are endowed with a simple neural network which is specified by their genome. With time, they'll make children, which will inherit the genome, plus some random mutations. The mutations will add a connetion, a node, or change the weight. The evolutionary system is based on NEAT by Kenneth Stanley ([paper here][1]). However, the main difference between this approach and the classic evolutionary algorithm approach, is the naturalistic approach we are using here. In a classic evolutionary algorithm we would use a fitness function, we would test our agents, and we would use a genetic operator for generating the next generation. We have none of that here. Agents will spawn a new children every `x` time-steps. The more they survive, the more children they'll get. I found this approach much more intuitively valid as will simply respond to the rule: `the more you survive, the more you'll spread your genes`.  This will also allow for generational interactions (as multiple generations will live at the same time), in case one wants to run experiments on family behaviour etc.
 
