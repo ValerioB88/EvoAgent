@@ -3,8 +3,8 @@ _An evolutionary multi-agent platform based on mesa and NEAT_\
 A video of an old version of EvoAgent can be found on youtube: \
 https://www.youtube.com/watch?v=pOF1H84xPik&ab_channel=VBiscione
       {% post_url 2020-02-15-SecondPost %}
-      
-      ![My helpful screenshot](/assets/main.png)
+      - [xxx](./_post/2020-02-15-SecondPost.md)
+      ![My helpful screenshot](docs/assets/main.png)
 
 ## Overview
 With this tool you can evolve agents in a simple 2D environments. \
