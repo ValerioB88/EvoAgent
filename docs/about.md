@@ -3,7 +3,7 @@ _An evolutionary multi-agent platform based on mesa and NEAT_\
 A video of an old version of EvoAgent can be found on youtube: \
 https://www.youtube.com/watch?v=pOF1H84xPik&ab_channel=VBiscione
 
-![EvoAgent Main View](/EvoAgent/assets/main.png)
+![EvoAgent Main View](/assets/main.png)
 
 ## Overview
 
@@ -25,7 +25,7 @@ There are several examples in the folder `code/evoagent/experiments/`, which sho
 
 ## Environment View
 This contains a canvas, information about the selected agent, and some plots. At each points there always be a `selected agents`, for which many info are shown in the text field on the right sidebar. You can change the selected agent by pressing `a` and `d` on your keyboard (in a future version, it will be possible to click on the agent on the canvas to select it). Other info are shown in the following image:
-![EvoAgent Main View](/EvoAgent/assets/evoview.png)
+![EvoAgent Main View](/assets/evoview.png)
 
 
 ## Shortcuts
