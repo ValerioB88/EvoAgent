@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Welcome to Jekyll!"
+title:  "First Post"
 ---
 
-asdasdasdasd FIRST
+This is the very first post of the EvoAgent blog.
