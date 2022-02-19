@@ -1,8 +1,6 @@
-
 ---
 layout: default
 comments: true
-# other options
 ---
 
 # About EvoAgent
