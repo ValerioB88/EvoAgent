@@ -8,6 +8,7 @@ If you want to contribute you are free to do so, but I don't have a process in p
 
 Finally, this project is dedicated to the loving memory of Domenico Parisi.
 
+Contact me at valerio biscione at gmail dot com
 
 [1]: https://mindandmachine.blogs.bristol.ac.uk/people/
 [2]: http://valeriobiscione.com/
