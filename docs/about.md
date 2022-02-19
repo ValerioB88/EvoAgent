@@ -1,3 +1,10 @@
+
+---
+layout: default
+comments: true
+# other options
+---
+
 # About EvoAgent
 _An evolutionary multi-agent platform based on mesa and NEAT_\
 A video of an old version of EvoAgent can be found on youtube: \
@@ -84,3 +91,26 @@ This has only been tested on Windows 10 and Edge 97. I don't plan to test it on 
 [2]: https://www.youtube.com/watch?v=pOF1H84xPik&ab
 [3]: https://github.com/projectmesa/mesa
 [4]: https://github.com/ValerioB88/mesa
+
+
+{% if page.comments %}
+<div id="disqus_thread"></div>
+<script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://https-valeriob88-github-io-evoagent.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+{% endif %}
