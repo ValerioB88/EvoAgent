@@ -9,7 +9,7 @@ If you want to contribute you are free to do so, but I don't have a process in p
 Finally, this project is dedicated to the loving memory of Domenico Parisi.
 
 
-[1] https://mindandmachine.blogs.bristol.ac.uk/people/
-[2] http://valeriobiscione.com/
-[3] http://laral.istc.cnr.it/evorobotstar/
-[4] https://www.istc.cnr.it/people/domenico-parisi
+[1]: https://mindandmachine.blogs.bristol.ac.uk/people/
+[2]: http://valeriobiscione.com/
+[3]: http://laral.istc.cnr.it/evorobotstar/
+[4]: https://www.istc.cnr.it/people/domenico-parisi
