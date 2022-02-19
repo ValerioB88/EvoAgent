@@ -4,6 +4,8 @@ A video of an old version of EvoAgent can be found on youtube: \
 https://www.youtube.com/watch?v=pOF1H84xPik&ab_channel=VBiscione
 
 ![EvoAgent Main View](/assets/main.png)
+[Link to a page]({{ site.baseurl }}{% link index.md %})
+
 
 ## Overview
 
