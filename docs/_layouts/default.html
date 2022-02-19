@@ -14,11 +14,9 @@
 
     <header>
 <style>
-       
-  
-        .tab4 {
-            tab-size: 8;
-        }
+   .tab {
+            display: inline-block;
+            margin-left: 40px;
     </style>
 
       <div class="container">
@@ -26,7 +24,11 @@
           <h1>{{ site.title | default: site.github.repository_name }}</h1>
          
         </a>
-        <h4 class="tab4"><a href="{{ site.baseurl }}{% link about.md %}">[About EvoAgent]</a> <a href="{{ site.baseurl }}{% link index.md %}">[Blog]</a>  <a href="{{ site.baseurl }}{% link future_simulations.md %}">[Projects]</a>  <a href="{{ site.baseurl }}{% link about_me.md %}">[About Me]</a></h4>
+        <h4 class="tab4">
+          <a href="{{ site.baseurl }}{% link about.md %}">[About EvoAgent]</a><span class="tab"></span>
+          <a href="{{ site.baseurl }}{% link index.md %}">[Blog]</a>  <a href="{{ site.baseurl }}{% link future_simulations.md %}">[Projects]</a><span class="tab"></span>
+          <a href="{{ site.baseurl }}{% link about_me.md %}">[About Me]</a><span class="tab"></span>
+        </h4>
         <h2>{{ site.description | default: site.github.project_tagline }}</h2>
 
         <section id="downloads">
