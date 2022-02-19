@@ -26,7 +26,7 @@ There are several examples in the folder `code/evoagent/experiments/`, which sho
 ## Environment View
 This contains a canvas, information about the selected agent, and some plots. At each points there always be a `selected agents`, for which many info are shown in the text field on the right sidebar. You can change the selected agent by pressing `a` and `d` on your keyboard (in a future version, it will be possible to click on the agent on the canvas to select it). Other info are shown in the following image:
 ![EvoAgent Main View](/assets/evoview.png)
-
+[Link to a page]({{ site.baseurl }}{% link index.md %})
 
 ## Shortcuts
 `q` start/stop simulation\
