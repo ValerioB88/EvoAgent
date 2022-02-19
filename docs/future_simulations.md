@@ -2,9 +2,9 @@
 
 There are many interesting phenomena that I would like to try in EvoAgent. This is a list of some of them, which will be updated as I come up with new ones. They are mostly based on behaviour of primates.
 
-In this docuemtn I use Female as "the gender the bears the highest cost of reproduction", and Male as "the other gender"
+In this docuemnt I'll use Female as "the gender the bears the highest cost of reproduction", and Male as "the other gender"
 
-# General phenomena emerging from sexual reproduction and the presence of two asymmetric genders
+## General phenomena emerging from sexual reproduction and the presence of two asymmetric genders
 Males are most focused on finding suitable female partners. Females are interested in finding food. 
 Most of these phenomena should directly emerge from the fact that Female bears a highest cost of reproduction.
 This seems an *extremely* important factor as *sexual selection if often much stronger than natural selection*. 
@@ -24,8 +24,8 @@ Common Observations:
 * Sexual reproduction (with Female bearing most of the cost)
 
 
-# Infanticide 
-Infanticide is really common in primate. The degree in which this behaviour is spread has been controversial for quite long time, but it seems to be widely accepted now, as far as I can tell (Hardy 1977). 
+## Infanticide 
+Infanticide is really common in primate. The degree in which this behaviour is spread has been controversial for quite long time, but it seems to be widely accepted now, as far as I can tell [Hardy 1977][1]. 
 After the death of an infant, the female stops lactating and starts cycling again. 
 
 #### We Need 
@@ -39,7 +39,7 @@ Is this necessary? What happens if the interbirth time is _not_ affected at all 
 * Infanticidal should only emerge if the killing part can distinguish their children from others
 * Infanticide should produce a "friendship" behaviour between females and surrounding males
 
-# Contest Competition vs Scrambled Competition
+## Contest Competition vs Scrambled Competition
 Contest competition happen when the food is clustered in one specific location and can be controlled by a single animal. If the food is scattered around and can't be monopolized, then it generates "scrambled" competition.
 For now the environment contains only scramble resources, but most interesting behaviour happen with clustered food.
 
@@ -52,7 +52,7 @@ For now the environment contains only scramble resources, but most interesting b
 * Contest competition generates dominant relations
 * Compare Contest compet. environment with scrambled env. in terms of dominant relations.
 
-# Living in groups and sociality
+## Living in groups and sociality
 Group living is very rare amongst mammals, but it's much more common for primates. This might be a very complex emerging behaviour so needs more thinking. What favours 
 
 #### To Investigate
@@ -60,4 +60,4 @@ What's driving living in group amongst primate: feeding or predation?
 
 
 
-https://pubmed.ncbi.nlm.nih.gov/402873/
+[1] https://pubmed.ncbi.nlm.nih.gov/402873/
