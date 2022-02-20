@@ -6,11 +6,11 @@ comments: true
 # About EvoAgent
 _An evolutionary multi-agent platform based on mesa and NEAT_\
 A video of an old version of EvoAgent can be found on youtube: \
-<iframe width="840" height="630"
+<iframe width="420" height="315"
 src="https://www.youtube.com/embed/pOF1H84xPik">
 </iframe>
 
-
+This is a screenshot from a more recentversion. You can see that the network for the selected network is displayed on the left side, and much more information are shown.
 ![EvoAgent Main View](/assets/main.png)
 
 
