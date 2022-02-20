@@ -1,5 +1,5 @@
 # About Me 
-I am Valerio Biscione, a remote scientist currently working with the [Mind and Machine lab][1] at Bristol University, UK. I am interested in Psychology, Machine Learning, Evolution, Vision, and Music. I am an occasional [pianist and composer][5]. I am based in [Salerno], Italy. \
+I am Valerio Biscione, a remote scientist currently working with the [Mind and Machine lab][1] at Bristol University, UK. I am interested in Psychology, Machine Learning, Evolution, Vision, and Music. I am an occasional [pianist and composer][5]. I am based in [Salerno][6], Italy. \
 My more general website (but still badly updated) is [this one][2]. \
 Here I'll write uniquely about EvoAgent, the ideas I want to try with it, and the development process. \ 
 EvoAgent stems directly from [EvoRobot][3], a software developed (but, AFAIK, not mantained since years) at CNR in Rome, where I worked for a bit in the past with the late [Domenico Parisi][4], and that was part of my BSc Thesis. I had tremendous fun doing socio-anthropological simulations over there, and always thought about building a more modern EvoRobot, using current evolutionary algorithms and going back doing some cool evolutionary experiments. My interest in evolutionary game theory and evolutionary analysis has only growth with time, hence this project. 
