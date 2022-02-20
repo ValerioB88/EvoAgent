@@ -2,7 +2,7 @@
 I happily accept donations to incentivize my work on this project. 
 This is a project I deeply care about and I'll keep working on it anyway, but knowing that other people care as well and they find it fascinating will push me to work on it more. Therefore, consider donating. I will think of a nice way to acknowledge patrons.
 
-You can use my [PayPal][1]
+
 
 <form action="https://www.paypal.com/donate" method="post" target="_top">
 <input type="hidden" name="business" value="PAK7G38E22NAN" />
@@ -12,4 +12,3 @@ You can use my [PayPal][1]
 <img alt="" border="0" src="https://www.paypal.com/en_GB/i/scr/pixel.gif" width="1" height="1" />
 </form>
 
-[1]: https://paypal.me/ValerioBiscione?country.x=GB&locale.x=en_GB
