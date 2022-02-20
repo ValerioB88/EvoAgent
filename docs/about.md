@@ -5,7 +5,7 @@ comments: true
 
 # About EvoAgent
 _An evolutionary multi-agent platform based on mesa and NEAT_\
-A video of an old version of EvoAgent can be found on youtube: \
+A video of an old version of EvoAgent can be found on youtube:
 <iframe width="420" height="315"
 src="https://www.youtube.com/embed/pOF1H84xPik">
 </iframe>
