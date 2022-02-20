@@ -9,7 +9,7 @@ remote_theme: pages-themes/hacker@v0.2.0
 # remote_theme: mmistakes/minimal-mistakes@4.24.0
 plugins:
 - jekyll-remote-theme # add this line to the plugins list if you already have one
-# base_url: /EvoAgent
+base_url: /EvoAgent
 # social links
 twitter_username: your-twitter-handle # DO NOT include the @ character, or else the build will fail!
 github_username:  ValerioB88 # DO NOT include the @ character, or else the build will fail!
