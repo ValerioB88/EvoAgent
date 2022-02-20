@@ -13,7 +13,7 @@ background: green}
 <ul>
   {% for post in site.posts %}
     <li>
-      <a href="/EvoAgent/{{ post.url }}"><span style="color:magenta" class="tab">{{ post.date | date: "%m/%d/%Y" }}</span>{{ post.title }}</a>
+      <span style="color:magenta" class="tab">{{ post.date | date: "%m/%d/%Y" }}</span><a href="/EvoAgent/{{ post.url }}">{{ post.title }}</a>
     </li>
   {% endfor %}
 </ul>
