@@ -25,9 +25,7 @@ At the beginning, agents are endowed with a simple neural network which is speci
 `git clone --recurse-submodule git@github.com:ValerioB88/EvoAgent.git` 
 
 EvoAgent plots everything in the browser. This is heavily dependent on the [Mesa library][3]. [My fork][4] of Project Mesa should be automatically added as a submodule.
-You should add the following folders in the PYTHONPATH:
-`PYTHONPATH "${PYTHONPATH}:[EvoAgent]/mesa/:[EvoAgent]/code/" `
-Where [EvoAgent] is your EvoAgent folder.
+There are several examples you can run to check if everything work (see next section). I still need to thoroughly test the installation and testing process, but if you want to try it and you are running into problems, please contact me, I'll be happy to help!
 
 
 ## Examples
