@@ -23,6 +23,8 @@ Common Observations:
 #### We need
 * Sexual reproduction (with Female bearing most of the cost)
 
+## r/K Selection Theory (suggested by "A Wild Boustrophedon")
+See [here][2]. This should be working by allowing the agents to decide when to reproduce and how much parental effort give the children. It could create interesting dynamics, and it isn't very difficult to code
 
 ## Infanticide 
 Infanticide is really common in primate. The degree in which this behaviour is spread has been controversial for quite long time, but it seems to be widely accepted now, as far as I can tell [Hardy 1977][1]. 
@@ -60,4 +62,5 @@ What's driving living in group amongst primate: feeding or predation?
 
 
 
-[1] https://pubmed.ncbi.nlm.nih.gov/402873/
+[1]: https://pubmed.ncbi.nlm.nih.gov/402873/
+[2]: https://en.wikipedia.org/wiki/R/K_selection_theory
