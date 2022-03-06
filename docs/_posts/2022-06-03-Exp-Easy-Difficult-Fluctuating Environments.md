@@ -14,9 +14,9 @@ I have used 3 environments, which varied on the amount of food tokens they conta
 
 However, when tested together (I put them together in an averagely abundant environment), I couldn't find any particular pattern. I ran 10 seeds, and sometime even though one of the population almost always took over the other 2, it wasn't always the same population to win. 
 The explanation I found is that the total amount of food token is not that important. What's important is the ratio is the ratio food token over population. On a difficult environment the carrying capacity is low, and from the initial population of 100 agents the equilibrium is about 17 agents.  On an easy environment the population goes from 100 (the initial amount of agents) to ~155 (Figure 1). With more food, the environment support more agents, and thus there is more competition to get the food and overall the amount of food available at any time per agent is the same across these environments! (Figure 2)
-![Figure 1](/EvoAgent/assets/experiments/diff_environments/num_agents.png)
+![Figure 1](/EvoAgent/assets/experiments/diff_environments/num_agents.png){: width="250" }
 
-![Figure 2](/EvoAgent/assets/experiments/diff_environments/agents_over_food.png)
+![Figure 2](/EvoAgent/assets/experiments/diff_environments/agents_over_food.png){: width="250" }
 
 Someone suggested me to use random mortality as a way of changing the environment difficulty, which makes sense. That's probably gonna be my next experiment.
 
