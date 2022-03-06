@@ -1,38 +1,23 @@
-from mesa.mesa.visualization.ModularVisualization import ModularServer
 from src.evoagent.utils import *
 from src.evoagent.SimpleContinuousModule import SimpleCanvas
 from src.evoagent.network_chart import PopChart
 from copy import deepcopy
 
 
-def run_model(model_params, env_view=False, modules=None):
-    if env_view:
-
-        server = ModularServer(model_factory, modules, "EvoAgent", model_params, verbose=False)
-        server.launch()
-    else:
-        r = "Start"
-        while r != "Finished":
-            m = model_factory(**deepcopy(model_params))
-            r = m.step()
-            while r == "Step":
-                r = m.step()
 
 
 def run(seed=0, test=False, env_view=False):
     size = (1000, 1000)
 
-    name_run = f"difficult_envS{seed}"
+    name_run = f"easy_envS{seed}"
 
     if test:
-        epochs = deque([Epoch(2000, [0.8] * 75)])
+        epochs = deque([Epoch(2000, [0.8] * 200)])
         pop = f'./data/{name_run}/save_pop/step10000.pickle'
         collect_data = True
         additional_info = f'Pop: {pop}'
     else:
-        epochs = deque([Epoch(2000, [0.8]*200),
-                        Epoch(2000, [0.8]*100),
-                        Epoch(6000, [0.8]*75)])
+        epochs = deque([Epoch(10000, [0.8]*200)])
         pop = None
         collect_data = False
         additional_info = ''
