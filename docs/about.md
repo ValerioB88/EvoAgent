@@ -22,9 +22,11 @@ At the beginning, agents are endowed with a simple neural network which is speci
 
 
 ## Install
-`git clone --recurse-submodule git@github.com:ValerioB88/EvoAgent.git` 
 
-EvoAgent plots everything in the browser. This is heavily dependent on the [Mesa library][3]. [My fork][4] of Project Mesa should be automatically added as a submodule.
+`git clone git@github.com:ValerioB88/EvoAgent.git` 
+EvoAgent plots everything in the browser. This is heavily dependent on the [Mesa library][3]. [My fork][4]
+To install my fork run `pip install git+https://github.com/ValerioB88/mesa`
+
 There are several examples you can run to check if everything work (see next section). I still need to thoroughly test the installation and testing process, but if you want to try it and you are running into problems, please contact me, I'll be happy to help!
 
 
