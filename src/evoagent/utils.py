@@ -1,5 +1,5 @@
-from mesa.mesa.visualization.ModularVisualization import ModularServer
-from collections import namedtuple, deque
+from mesa.visualization.ModularVisualization import ModularServer
+from collections import namedtuple
 import pickle
 from .model import Environment
 from .network_chart import InputChart, OutputChart

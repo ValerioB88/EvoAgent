@@ -1,8 +1,7 @@
 from src.evoagent.utils import *
 from src.evoagent.SimpleContinuousModule import SimpleCanvas
 from src.evoagent.network_chart import PopChart
-from copy import deepcopy
-
+from collections import deque
 
 
 

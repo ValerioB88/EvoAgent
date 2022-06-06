@@ -1,8 +1,9 @@
-from mesa.mesa.visualization.ModularVisualization import ModularServer
 from src.evoagent.utils import *
 from src.evoagent.SimpleContinuousModule import SimpleCanvas
 from src.evoagent.network_chart import PopChart
-from matplotlib import colors
+from collections import deque
+from mesa.visualization.ModularVisualization import ModularServer
+
 
 size = (1000, 1000)
 

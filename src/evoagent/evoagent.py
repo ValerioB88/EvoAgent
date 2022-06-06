@@ -1,5 +1,4 @@
-import numpy as np
-from mesa.mesa import Agent
+from mesa.agent import Agent
 import string
 import random
 import numpy as np
@@ -105,7 +104,6 @@ class EvoAgent(Agent):
         self.die_callbacks = []
 
     def compute_vision(self, pop_idx):
-
         close_food_idx = np.where(self.model.food_dist_matrix[pop_idx] < self.max_vision_dist)[0]
         close_food = [self.model.all_food[i] for i in np.where(self.model.food_dist_matrix[pop_idx] < self.max_vision_dist)[0]]
         if len(close_food):
@@ -157,7 +155,8 @@ class EvoAgent(Agent):
 
 
     def die(self):
-        self.model.collectors[EvoAgent.die].update(self) if EvoAgent.die in self.model.collectors else None
+        if self.model.collect_data:
+            self.model.collectors[EvoAgent.die].update(self) if EvoAgent.die in self.model.collectors else None
 
         self.model.schedule.remove(self)
         if len(self.model.schedule.agents) > 0:

@@ -1,7 +1,6 @@
-from mesa.mesa.visualization.ModularVisualization import VisualizationElement
+from mesa.visualization.ModularVisualization import VisualizationElement
 from .model import Environment, FoodToken
 from .evoagent import EvoAgent
-from .utils import find_pop_idx_from_id
 from .visualize import draw_net
 
 def object_draw(pop_idx, type="agent", obj : EvoAgent=None, is_selected=False):
@@ -36,7 +35,7 @@ def object_draw(pop_idx, type="agent", obj : EvoAgent=None, is_selected=False):
 
 
 class SimpleCanvas(VisualizationElement):
-    local_includes = ["code/evoagent/simple_continuous_canvas.js"]
+    local_includes = ["src/evoagent/simple_continuous_canvas.js"]
     portrayal_method = None
 
     def __init__(self, canvas_height=500, canvas_width=500, name_sim='', additional_info=''):

@@ -1,8 +1,8 @@
-from mesa.mesa.visualization.ModularVisualization import ModularServer
 from src.evoagent.utils import *
 from src.evoagent.SimpleContinuousModule import SimpleCanvas
 from src.evoagent.network_chart import PopChart
-from copy import deepcopy
+from mesa.visualization.ModularVisualization import ModularServer
+from collections import deque
 
 def run(seed=0):
     size = (1000, 1000)

@@ -6,8 +6,7 @@ Module for drawing live-updating line charts using Charts.js
 
 """
 import json
-import os
-from mesa.mesa.visualization.ModularVisualization import VisualizationElement
+from mesa.visualization.ModularVisualization import VisualizationElement
 
 
 class Chart(VisualizationElement):
@@ -44,7 +43,7 @@ class Chart(VisualizationElement):
     """
 
     package_includes = ["Chart.min.js"]
-    local_includes = ["code/evoagent/network_chart.js"]
+    local_includes = ["src/evoagent/network_chart.js"]
 
 
     def __init__(

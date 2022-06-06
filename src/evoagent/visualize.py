@@ -3,7 +3,12 @@ from __future__ import print_function
 import copy
 import warnings
 
-import graphviz
+use_graph = False
+try:
+    import graphviz
+    use_graph = True
+except:
+    pass
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -117,7 +122,7 @@ def draw_net(config, genome, view=False, filename=None, node_names=None, show_di
              node_colors=None, fmt='svg'):
     """ Receives a genome and draws a neural network with arbitrary topology. """
     # Attributes for network nodes.
-    if graphviz is None:
+    if use_graph is False:
         warnings.warn("This display is not available due to a missing optional dependency (graphviz)")
         return
 

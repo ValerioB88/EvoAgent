@@ -1,10 +1,7 @@
-from mesa.mesa.datacollection import DataCollector
 import shutil
-from .utils import *
-from mesa.mesa.time import BaseScheduler
-from collections import namedtuple
+from mesa.time import BaseScheduler
 import numpy as np
-from mesa.mesa import Model
+from mesa.model import Model
 import pathlib
 import neat
 from .evoagent import Countdown
@@ -71,7 +68,6 @@ class AgentDataCollector:
             df.to_csv(path, index=False)
         self.all_rows = []
 
-from evoagent.evoagent import EvoAgent
 
 class Environment(Model):
     global_id = 0
@@ -168,13 +164,16 @@ class Environment(Model):
         self.selected_agent_unique_id = self.schedule.agents[0].unique_id
 
     def save_model_state(self):
-        [c.save(self.saved_collectors + f'/{c.name_collector}/step{self.step_count}.csv') for k, c in self.collectors.items()]
+        collectors_cmd = None
+        if self.collect_data:
+            [c.save(self.saved_collectors + f'/{c.name_collector}/step{self.step_count}.csv') for k, c in self.collectors.items()]
+            collectors_cmd = self.collectors
+            self.collectors = None
         server_cmd = self.server_model  # this object can't be pickled..
         self.server_model = None
         pbar_cmd = self.pbar
         self.pbar = None
-        collectors_cmd = self.collectors
-        self.collectors = None
+
         pickle.dump(self, open(self.saved_model_folder + f'/step{self.step_count}.pickle', 'wb'))
         pickle.dump([i for i in self.schedule.agents], open(self.saved_pop_folder + f'/step{self.step_count}.pickle', 'wb'))
         self.message += 'saved in: ' + self.saved_model_folder + f'/step{self.step_count}.pickle\n'
@@ -194,7 +193,7 @@ class Environment(Model):
         return "Finished"
 
     def step(self):
-        self.collectors[Environment.step].update(self)
+        self.collectors[Environment.step].update(self) if self.collect_data else None
         self.pbar.set_description("Steps")
         self.pbar.set_postfix_str(f"n. pop {len(self.schedule.agents)}")
         self.pbar.update(1)
