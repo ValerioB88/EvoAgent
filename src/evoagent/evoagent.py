@@ -47,7 +47,6 @@ class Countdown():
 class EvoAgent(Agent):
 
     age = 0
-
     fov = np.pi / 1.5
     max_vision_dist = 100
     energy_depletion = 0.008
@@ -59,7 +58,6 @@ class EvoAgent(Agent):
     fertile_age_start = 90
     num_children = 0
     fertile = False
-
     target_food = -1
 
     def __init__(

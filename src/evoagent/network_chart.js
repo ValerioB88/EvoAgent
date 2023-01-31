@@ -1,5 +1,4 @@
 
-
 var SelectedAgentInfo = function(series, canvas_width, canvas_height, render_with_canvas) {
 	this.max_length_data = 50
 	var canvas_tag = "<canvas width='" + canvas_width + "' height='" + canvas_height + "' ";
